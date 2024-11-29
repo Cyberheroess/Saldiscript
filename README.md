@@ -1,3 +1,5 @@
+![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
+
 # saldi script
 > Bot ini dirancang untuk membantu menguji berbagai jenis serangan terhadap situs web🔥
 ## Fitur
