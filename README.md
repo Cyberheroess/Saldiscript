@@ -36,6 +36,7 @@
     <td>✅</td>
   </tr>
 </table>
+![17328665281992958196165577947513](https://github.com/user-attachments/assets/7dd2f7dc-4735-4f2f-aec2-8f50636bbac6)
 
 ## persyaratan 
 > python 3.10 (atau versi yabg terbaru)
@@ -52,3 +53,5 @@
    ```
 # peringatan❗
 > script ini bertujuan untuk mempelajari keamanan sistem website,bukan untuk tujuan yang melanggar hukum dan etis
+
+![17328665569298873019182675306100](https://github.com/user-attachments/assets/b27464a9-bb03-4889-8cd6-6ef001dc3f0a)
