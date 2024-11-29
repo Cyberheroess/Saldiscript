@@ -50,6 +50,7 @@
    ```bash
    git clone https://github.com/Cyberheroess/Saldiscript.git
    cd Saldiscript
+   pip install fake_useragent
    pip install -r requirements.txt
    python main.py
    ```
