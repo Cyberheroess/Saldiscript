@@ -23,7 +23,18 @@ B = '\033[94m'
 M = '\033[95m'
 C = '\033[96m'
 N = '\033[0m'
+print(f"""{B}
 
+   _____       _     _        _____ _    _ 
+  / ____|     | |   | |      / ____| |  | |
+ | (___   __ _| | __| |_   _| |    | |__| |
+  \___ \ / _` | |/ _` | | | | |    |  __  |
+  ____) | (_| | | (_| | |_| | |____| |  | |
+ |_____/ \__,_|_|\__,_|\__, |\_____|_|  |_|
+                        __/ |              
+                       |___/               
+
+""")
 logging.basicConfig(filename='log_serangan.txt', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 def load_file(file_name):
