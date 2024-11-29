@@ -39,10 +39,11 @@ logging.basicConfig(filename='log_serangan.txt', level=logging.INFO, format='%(a
 
 def load_file(file_name):
     try:
-        with open(file_name, 'r') as file:
+        file_path = os.path.join('use_agents', file_name)  
+        with open(file_path, 'r') as file:
             return [line.strip() for line in file.readlines()]
     except FileNotFoundError:
-        logging.error(f"File {file_name} tidak ditemukan!")
+        logging.error(f"File {file_name} tidak ditemukan di folder 'use_agents'!")
         return []
 
 USER_AGENTS = load_file('user_agents.txt')
