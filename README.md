@@ -48,8 +48,8 @@
 
 1. Clone repository ini:
    ```bash
-   git clone https://github.com/Cyberheroess/Eksploit-bot.git
-   cd Eksploit-bot
+   git clone https://github.com/Cyberheroess/Saldiscript.git
+   cd Saldiscript
    pip install -r requirements.txt
    python main.py
    ```
