@@ -1,29 +1,25 @@
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 class Reconnaissance:
     def __init__(self, target_url):
         self.target_url = target_url
 
-    def scan_headers(self):
-        try:
-            response = requests.head(self.target_url)
-            headers = response.headers
-            print("Headers found on target URL:")
-            for header, value in headers.items():
-                print(f"{header}: {value}")
-        except requests.RequestException as e:
-            print(f"Error during reconnaissance: {e}")
-
-    def scan_links(self):
+    def scan(self):
+        """
+        Melakukan pemindaian terhadap target untuk mengetahui potensi kerentanannya.
+        """
         try:
             response = requests.get(self.target_url)
-            links = self.extract_links(response.text)
-            print("Links found on target URL:")
-            for link in links:
-                print(link)
-        except requests.RequestException as e:
-            print(f"Error during reconnaissance: {e}")
+            if response.status_code == 200:
+                logger.info(f"Target is online and reachable: {self.target_url}")
+            else:
+                logger.warning(f"Target is not reachable: {self.target_url}")
+        except Exception as e:
+            logger.error(f"Error during reconnaissance: {str(e)}")
 
-    def extract_links(self, html):
-        # Logic for extracting links from HTML (using regex or BeautifulSoup)
-        pass
+# Contoh penggunaan:
+# recon = Reconnaissance("http://example.com")
+# recon.scan()
