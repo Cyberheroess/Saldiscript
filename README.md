@@ -54,6 +54,10 @@
    pip install -r requirements.txt
    python main.py
    ```
+## zero_day 
+```bash
+python3 Zero_day.py
+```
 # peringatan❗
 > script ini bertujuan untuk mempelajari keamanan sistem website,bukan untuk tujuan yang melanggar hukum dan etis
 
