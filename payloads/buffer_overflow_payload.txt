@@ -1,0 +1,3 @@
+A' * 1000         # Buffer Overflow attempt with 'A' repeated 1000 times
+AAAABBBBCCCCDDDD # Common buffer overflow string
+<iframe src="javascript:alert('Exploit')"> # Simple payload for JS injection
