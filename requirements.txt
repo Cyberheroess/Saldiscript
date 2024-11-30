@@ -6,3 +6,7 @@ pycryptodome
 fake_useragent
 pyfiglet
 sklearn
+numpy
+scikit-learn
+tensorflow
+keras
