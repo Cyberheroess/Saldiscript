@@ -1,31 +1,29 @@
 import requests
-import re
 
-def reconnaissance(url):
-    # Mencari informasi header
-    try:
-        response = requests.get(url)
-        print(f"Response headers for {url}:")
-        for header, value in response.headers.items():
-            print(f"{header}: {value}")
-        
-        # Mencari file robots.txt untuk mengetahui direktori terlarang
-        robots_url = f"{url}/robots.txt"
-        robots_response = requests.get(robots_url)
-        if robots_response.status_code == 200:
-            print("\nDisallowed paths found in robots.txt:")
-            print(robots_response.text)
-        else:
-            print("\nNo robots.txt found.")
-        
-        html_content = response.text
-        meta_tags = re.findall(r'<meta[^>]*name=["\'](.*?)["\'][^>]*content=["\'](.*?)["\']', html_content)
-        print("\nMeta tags found:")
-        for tag in meta_tags:
-            print(f"{tag[0]}: {tag[1]}")
-        
-    except requests.exceptions.RequestException as e:
-        print(f"Reconnaissance failed: {e}")
+class Reconnaissance:
+    def __init__(self, target_url):
+        self.target_url = target_url
 
-# Contoh penggunaan:
-# reconnaissance("http://target.com")
+    def scan_headers(self):
+        try:
+            response = requests.head(self.target_url)
+            headers = response.headers
+            print("Headers found on target URL:")
+            for header, value in headers.items():
+                print(f"{header}: {value}")
+        except requests.RequestException as e:
+            print(f"Error during reconnaissance: {e}")
+
+    def scan_links(self):
+        try:
+            response = requests.get(self.target_url)
+            links = self.extract_links(response.text)
+            print("Links found on target URL:")
+            for link in links:
+                print(link)
+        except requests.RequestException as e:
+            print(f"Error during reconnaissance: {e}")
+
+    def extract_links(self, html):
+        # Logic for extracting links from HTML (using regex or BeautifulSoup)
+        pass
