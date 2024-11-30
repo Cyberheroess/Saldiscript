@@ -3,3 +3,6 @@ selenium
 beautifulsoup4
 lxml
 pycryptodome
+fake_useragent
+pyfiglet
+sklearn
