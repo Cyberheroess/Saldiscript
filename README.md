@@ -42,7 +42,8 @@
 
 ## persyaratan 
 > python 3.10 (atau versi yabg terbaru)
-> chrome.exe
+> chromedriver
+> link download https://developer.chrome.com/docs/chromedriver/downloads?hl=id
 
 ## Cara Penggunaan
 
