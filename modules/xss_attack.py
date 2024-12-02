@@ -10,3 +10,7 @@ class XSSAttack:
             print(f"XSS attack successful on: {xss_url}")
         else:
             print(f"XSS attack failed on: {xss_url}")
+
+    def run_batch_xss(self, url, num_attacks=5):
+        for _ in range(num_attacks):
+            self.perform_xss_attack(url)
