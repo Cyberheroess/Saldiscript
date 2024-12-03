@@ -55,6 +55,8 @@
    cd Saldiscript
    pip install fake_useragent
    pip install -r requirements.txt
+   chmod +x install.sh
+   ./install.sh
    python main.py
    ```
 # peringatan❗
