@@ -43,6 +43,6 @@ sudo apt install curl wget git -y
 
 # Clone any repositories if needed
 # Example:
-# git clone 
+# git clone https://github.com/Cyberheroess/Saldiscript.git
 
 echo "Installation complete!"
