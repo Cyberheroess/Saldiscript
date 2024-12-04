@@ -1,164 +1,40 @@
 {
-  "general_settings": {
-    "debug_mode": true,
-    "log_file": "/path/to/logs/security.log",
-    "retry_limit": 3,
-    "timeout_seconds": 30,
-    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "proxy": {
-      "enabled": false,
-      "proxy_address": "http://proxy.example.com",
-      "proxy_port": 8080
-    }
-  },
-  "ai_ml_model": {
-    "enabled": true,
-    "model_path": "ml_model.h5",
-    "model_type": "LSTM",
-    "training_data": "payloads_training_data.csv",
-    "input_vectorization": {
-      "type": "CountVectorizer",
-      "max_features": 1000
+    "model": {
+        "ml_model_path": "data/ml_model.h5", 
+        "max_payload_length": 256, 
+        "vectorizer": "CountVectorizer",
+        "prediction_threshold": 0.7
     },
-    "attack_detection": {
-      "enabled": true,
-      "threshold_accuracy": 0.95,
-      "detection_types": ["SQL Injection", "XSS", "Command Injection"]
-    }
-  },
-  "waf_bypass": {
-    "enabled": true,
-    "method": "ai_based",
-    "ai_model": "waf_bypass_model.h5",
-    "dynamic_payloads": true,
-    "header_manipulation": true,
-    "timeout_threshold": 5
-  },
-  "advanced_payload_generation": {
-    "enabled": true,
-    "encoding_methods": [
-      "base64",
-      "url_encode",
-      "unicode_escape",
-      "hex_encode"
-    ],
-    "exploit_chain": {
-      "enabled": true,
-      "method": "dynamic_chain",
-      "steps": [
-        {
-          "exploit_type": "SQL Injection",
-          "method": "time-based"
-        },
-        {
-          "exploit_type": "XSS",
-          "method": "DOM-based"
-        },
-        {
-          "exploit_type": "Command Injection",
-          "method": "parameter_pollution"
-        }
-      ]
-    }
-  },
-  "reconnaissance": {
-    "enabled": true,
-    "banner_grabbing": {
-      "enabled": true,
-      "protocols": ["HTTP", "FTP", "SMTP"],
-      "timeout": 5
+    "attack_settings": {
+        "sql_injection": true,
+        "xss_attack": true,
+        "ddos_attack": true,
+        "file_inclusion": true,
+        "csrf_attack": false,
+        "reverse_shell": true,
+        "web_shell_upload": true,
+        "phishing_attack": false
     },
-    "dns_discovery": {
-      "enabled": true,
-      "dns_servers": ["8.8.8.8", "1.1.1.1"]
-    }
-  },
-  "ddos_protection": {
-    "enabled": false,
-    "threshold": 1000,
-    "target_url": "http://example.com",
-    "attack_vector": "SYN Flood",
-    "timeout": 60
-  },
-  "c2_server": {
-    "enabled": true,
-    "server_ip": "192.168.1.100",
-    "server_port": 4444,
-    "communication_protocol": "TCP",
-    "encryption_method": "AES-256",
-    "max_connections": 5
-  },
-  "logging": {
-    "enabled": true,
-    "log_level": "INFO",
-    "log_to_file": true,
-    "log_to_console": true
-  },
-  "attack_modes": {
-    "single_threaded": {
-      "enabled": false
+    "proxy_settings": {
+        "use_proxy": true,
+        "proxy_list_file": "data/proxies.txt"
     },
-    "multi_threaded": {
-      "enabled": true,
-      "threads_count": 50
+    "user_agent_settings": {
+        "use_user_agent_list": true,
+        "user_agents_file": "data/user_agents.txt"
     },
-    "distributed": {
-      "enabled": true,
-      "servers": [
-        {"ip": "192.168.1.101", "port": 8080},
-        {"ip": "192.168.1.102", "port": 8080}
-      ]
-    }
-  },
-  "proxy_settings": {
-    "enabled": false,
-    "proxy_type": "HTTP",
-    "proxy_address": "http://proxy.example.com",
-    "proxy_port": 8080,
-    "username": "proxy_user",
-    "password": "proxy_password"
-  },
-  "security": {
-    "encryption_enabled": true,
-    "encryption_algorithm": "AES-256",
-    "key_management": {
-      "method": "random_key_generation",
-      "key_length": 32
+    "logging": {
+        "enable_logging": true,
+        "log_file": "logs/attack_results.log",
+        "log_level": "INFO"
     },
-    "ssl_certificates": {
-      "enabled": true,
-      "certificate_path": "/path/to/certificate.crt",
-      "private_key_path": "/path/to/private.key"
-    }
-  },
-  "attack_defense": {
-    "anti_debugging": {
-      "enabled": true,
-      "techniques": [
-        "obfuscation",
-        "timing-based checks"
-      ]
+    "encryption": {
+        "key": "YOUR_SECRET_KEY_16",
+        "encryption_method": "AES",
+        "encryption_mode": "CBC"
     },
-    "payload_obfuscation": {
-      "enabled": true,
-      "methods": [
-        "base64",
-        "unicode",
-        "XOR"
-      ]
+    "network": {
+        "target_ip": "127.0.0.1",
+        "target_port": 80
     }
-  },
-  "recovery_mechanisms": {
-    "self_healing": {
-      "enabled": true,
-      "triggers": [
-        "detect_attack_pattern",
-        "timeout_threshold_exceeded"
-      ]
-    },
-    "fallback": {
-      "enabled": true,
-      "method": "restore_last_known_good_state"
-    }
-  }
 }
