@@ -11,3 +11,5 @@ scikit-learn
 tensorflow
 keras
 tensorflow-gpu
+dnspython
+urllib3
