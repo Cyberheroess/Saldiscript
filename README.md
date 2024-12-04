@@ -74,6 +74,7 @@
    pip install -r requirements.txt
    chmod +x install.sh
    ./install.sh
+   pip install requests fake-useragent pycryptodome dnspython pyfiglet numpy scikit-learn tensorflow
    python main.py
    ```
 # peringatan❗
