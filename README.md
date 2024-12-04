@@ -1,4 +1,4 @@
-![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
+no![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
 
 # saldi script
 > Bot ini dirancang untuk membantu menguji berbagai jenis serangan terhadap situs web🔥
@@ -6,38 +6,98 @@
 > respect for Haket❤️
 ## Fitur
 
-<table>
-  <tr>
-    <th>Menu</th>
-    <th>ready</th>
-  </tr>
-  <tr>
-    <td>Distributed Denial of Service (DDoS)</td>
-    <td>✅</td>
-  </tr>
-  <tr>
-    <td>SQL Injection</td>
-    <td>✅</td>
-  </tr>
-  <tr>
-    <td>Cross-Site Scripting (XSS)</td>
-    <td>✅</td>
-  </tr>
-  <tr>
-    <td>flooding</td>
-    <td>✅</td>
-  </tr>
-  <tr>
-    <td>menggunakan proxy</td>
-    <td>✅</td>
-  </tr>
-  <tr>
-  </tr>
-  <tr>
-    <td>deface payload</td>
-    <td>✅</td>
-  </tr>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Security Attack Tool - Fitur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Web Security Attack Tool - Fitur</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fitur</th>
+                <th>Deskripsi Singkat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Bypass WAF</td>
+                <td>Melewati WAF menggunakan **machine learning**.</td>
+            </tr>
+            <tr>
+                <td>DDoS</td>
+                <td>Serangan dengan mengirimkan banyak permintaan HTTP.</td>
+            </tr>
+            <tr>
+                <td>SQL Injection</td>
+                <td>Mengeksploitasi celah SQL untuk mengakses data.</td>
+            </tr>
+            <tr>
+                <td>XSS</td>
+                <td>Menyerang dengan skrip JavaScript berbahaya di browser.</td>
+            </tr>
+            <tr>
+                <td>File Inclusion</td>
+                <td>Mengakses file sensitif atau menyisipkan file berbahaya.</td>
+            </tr>
+            <tr>
+                <td>Phishing</td>
+                <td>Membuat halaman login palsu untuk mencuri kredensial.</td>
+            </tr>
+            <tr>
+                <td>Botnet</td>
+                <td>Serangan terdistribusi menggunakan botnet.</td>
+            </tr>
+            <tr>
+                <td>Reverse Shell</td>
+                <td>Mendapatkan akses penuh ke server target.</td>
+            </tr>
+            <tr>
+                <td>Eksfiltrasi Data</td>
+                <td>Menggunakan DNS tunneling untuk mencuri data.</td>
+            </tr>
+            <tr>
+                <td>DoS</td>
+                <td>Mengirim banyak permintaan untuk menurunkan performa server.</td>
+            </tr>
+            <tr>
+                <td>DNS Tunneling</td>
+                <td>Mengeksfiltrasi data melalui query DNS.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
 
 ![17328665904884084358768749000464](https://github.com/user-attachments/assets/b953cf61-eb09-4091-b4ce-8076426b8fca)
 
