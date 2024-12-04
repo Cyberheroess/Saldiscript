@@ -5,69 +5,56 @@
 >
 > respect for Haket❤️
 ## Fitur
-
-<body>
-
-    <h1>Web Security Attack Tool - Fitur</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Fitur</th>
-                <th>Deskripsi Singkat</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Bypass WAF</td>
-                <td>Melewati WAF menggunakan **machine learning**.</td>
-            </tr>
-            <tr>
-                <td>DDoS</td>
-                <td>Serangan dengan mengirimkan banyak permintaan HTTP.</td>
-            </tr>
-            <tr>
-                <td>SQL Injection</td>
-                <td>Mengeksploitasi celah SQL untuk mengakses data.</td>
-            </tr>
-            <tr>
-                <td>XSS</td>
-                <td>Menyerang dengan skrip JavaScript berbahaya di browser.</td>
-            </tr>
-            <tr>
-                <td>File Inclusion</td>
-                <td>Mengakses file sensitif atau menyisipkan file berbahaya.</td>
-            </tr>
-            <tr>
-                <td>Phishing</td>
-                <td>Membuat halaman login palsu untuk mencuri kredensial.</td>
-            </tr>
-            <tr>
-                <td>Botnet</td>
-                <td>Serangan terdistribusi menggunakan botnet.</td>
-            </tr>
-            <tr>
-                <td>Reverse Shell</td>
-                <td>Mendapatkan akses penuh ke server target.</td>
-            </tr>
-            <tr>
-                <td>Eksfiltrasi Data</td>
-                <td>Menggunakan DNS tunneling untuk mencuri data.</td>
-            </tr>
-            <tr>
-                <td>DoS</td>
-                <td>Mengirim banyak permintaan untuk menurunkan performa server.</td>
-            </tr>
-            <tr>
-                <td>DNS Tunneling</td>
-                <td>Mengeksfiltrasi data melalui query DNS.</td>
-            </tr>
-        </tbody>
-    </table>
-
-</body>
-</html>
-
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr>
+    <th>Name</th>
+    <th>YES/NO</th>
+  </tr>
+  <tr>
+    <td>Bypass WAF</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>DDoS Attack</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>SQL Injection</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>XSS (Cross-Site Scripting)</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>File Inclusion</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Phishing</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Botnet</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Reverse Shell</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>Eksfiltrasi Data</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>DoS Attack</td>
+    <td>✅</td>
+  </tr>
+  <tr>
+    <td>DNS Tunneling</td>
+    <td>✅</td>
+  </tr>
+</table>
 ![17328665904884084358768749000464](https://github.com/user-attachments/assets/b953cf61-eb09-4091-b4ce-8076426b8fca)
 
 
