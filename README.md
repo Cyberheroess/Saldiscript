@@ -1,4 +1,4 @@
-no![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
+![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
 
 # saldi script
 > Bot ini dirancang untuk membantu menguji berbagai jenis serangan terhadap situs web🔥
@@ -6,37 +6,6 @@ no![17328663551545080512131070111824](https://github.com/user-attachments/assets
 > respect for Haket❤️
 ## Fitur
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Security Attack Tool - Fitur</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
 <body>
 
     <h1>Web Security Attack Tool - Fitur</h1>
