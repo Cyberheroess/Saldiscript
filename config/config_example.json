@@ -1,0 +1,40 @@
+{
+    "model": {
+        "ml_model_path": "data/ml_model.h5",
+        "max_payload_length": 128,
+        "vectorizer": "TfidfVectorizer",
+        "prediction_threshold": 0.8
+    },
+    "attack_settings": {
+        "sql_injection": true,
+        "xss_attack": true,
+        "ddos_attack": true,
+        "file_inclusion": false,
+        "csrf_attack": true,
+        "reverse_shell": true,
+        "web_shell_upload": false,
+        "phishing_attack": true
+    },
+    "proxy_settings": {
+        "use_proxy": true,
+        "proxy_list_file": "data/proxies.txt"
+    },
+    "user_agent_settings": {
+        "use_user_agent_list": true,
+        "user_agents_file": "data/user_agents.txt"
+    },
+    "logging": {
+        "enable_logging": true,
+        "log_file": "logs/attack_results.log",
+        "log_level": "DEBUG"
+    },
+    "encryption": {
+        "key": "ANOTHER_SECRET_KEY_16",
+        "encryption_method": "RSA",
+        "encryption_mode": "ECB"
+    },
+    "network": {
+        "target_ip": "192.168.1.1",
+        "target_port": 8080
+    }
+}
