@@ -74,7 +74,7 @@ def create_session():
         total=3,
         backoff_factor=1,
         status_forcelist=[500, 502, 503, 504],
-        method_whitelist=["HEAD", "GET", "OPTIONS"]
+        allowed_methods=["HEAD", "GET", "OPTIONS"]
     )
     
     adapter = HTTPAdapter(max_retries=retry_strategy)
