@@ -1,10 +1,9 @@
-![17328663551545080512131070111824](https://github.com/user-attachments/assets/1e4c1887-9d98-485e-ac0e-5d6edc5ee8ad)
+# Saldi Script  
+> This bot is designed to help test various types of attacks on websites 🔥  
+>  
+> Respect for Haket ❤️  
 
-# saldi script
-> Bot ini dirancang untuk membantu menguji berbagai jenis serangan terhadap situs web🔥
->
-> respect for Haket❤️
-## Fitur
+## Features  
 <table border="1" cellpadding="5" cellspacing="0">
   <tr>
     <th>Name</th>
@@ -43,7 +42,7 @@
     <td>✅</td>
   </tr>
   <tr>
-    <td>Eksfiltrasi Data</td>
+    <td>Data Exfiltration</td>
     <td>✅</td>
   </tr>
   <tr>
@@ -56,17 +55,16 @@
   </tr>
 </table>
 
-![17328665904884084358768749000464](https://github.com/user-attachments/assets/b953cf61-eb09-4091-b4ce-8076426b8fca)
+![17328665904884084358768749000464](https://github.com/user-attachments/assets/b953cf61-eb09-4091-b4ce-8076426b8fca)  
 
+## Requirements  
+> Python 3.10 (or the latest version)  
+> Chromedriver  
+> Download link: https://developer.chrome.com/docs/chromedriver/downloads?hl=id  
 
-## persyaratan 
-> python 3.10 (atau versi yabg terbaru)
-> chromedriver
-> link download https://developer.chrome.com/docs/chromedriver/downloads?hl=id
+## Usage  
 
-## Cara Penggunaan
-
-1. Clone repository ini:
+1. Clone this repository:  
    ```bash
    git clone https://github.com/Cyberheroess/Saldiscript.git
    cd Saldiscript
@@ -76,8 +74,12 @@
    ./install.sh
    pip install requests fake-useragent pycryptodome dnspython pyfiglet numpy scikit-learn tensorflow
    python main.py
-   ```
-# peringatan❗
-> script ini bertujuan untuk mempelajari keamanan sistem website,bukan untuk tujuan yang melanggar hukum dan etis
 
-![17328665569298873019182675306100](https://github.com/user-attachments/assets/b27464a9-bb03-4889-8cd6-6ef001dc3f0a)
+Warning ❗
+
+> This script is intended for learning website security systems, not for unlawful or unethical purposes.
+
+
+
+
+
