@@ -1,3 +1,5 @@
+![17355619425914202247166271883165](https://github.com/user-attachments/assets/04d5c869-e75d-4521-903a-57096d935bd6)
+
 # Saldi Script  
 > This bot is designed to help test various types of attacks on websites 🔥  
 >  
