@@ -75,8 +75,7 @@
    pip install requests fake-useragent pycryptodome dnspython pyfiglet numpy scikit-learn tensorflow
    python main.py
 
-Warning ❗
-
+## Warning ❗
 > This script is intended for learning website security systems, not for unlawful or unethical purposes.
 
 
