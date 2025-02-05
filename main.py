@@ -62,14 +62,7 @@ def get_random_user_agent():
     ua = UserAgent()
     return ua.random if USER_AGENTS is None else random.choice(USER_AGENTS)
 
-
 def create_session():
-    """
-    Enhanced session creation with VPN/Proxy and dynamic configuration.
-    """
-    # Example: Dynamic VPN integration (placeholder)
-    # os.system("openvpn --config /path/to/config.ovpn &")
-    
     session = requests.Session()
     session.headers.update({
         'User-Agent': get_random_user_agent(),
