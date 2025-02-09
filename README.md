@@ -1,5 +1,5 @@
 ![17355619425914202247166271883165](https://github.com/user-attachments/assets/04d5c869-e75d-4521-903a-57096d935bd6)
-![Alt Text](https://example.com/gambar.png)
+![Alt Text]([https://example.com/gambar.png](https://private-user-images.githubusercontent.com/188855284/399291609-04d5c869-e75d-4521-903a-57096d935bd6.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzkxNDUwOTEsIm5iZiI6MTczOTE0NDc5MSwicGF0aCI6Ii8xODg4NTUyODQvMzk5MjkxNjA5LTA0ZDVjODY5LWU3NWQtNDUyMS05MDNhLTU3MDk2ZDkzNWJkNi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMjA5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDIwOVQyMzQ2MzFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03NTVjODRhMjFlNDQwZGRkZDRlMTg1M2YyZjJhNzY2ZDhhZWQyODY3ODNlOWVjMDAwZWJmYjhmYzE1ODUwZThjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.aHIfNsrMHIsCNyLOgeah3T8Pg4gaI8GCT0Adzk7BLNI))
 
 # Saldi Script  
 > This bot is designed to help test various types of attacks on websites 🔥  
